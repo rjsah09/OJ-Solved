@@ -22,15 +22,11 @@ public class Main {
                 }
             }
 
-            List<Integer> valueList = new ArrayList<>(map.values());
+            List<Integer> valueList = new ArrayList<>(new HashSet<>(map.values()));
             Collections.sort(valueList, Collections.reverseOrder());
-
             int second = 0;
-            for (int i = 1; i < valueList.size(); i++) {
-                if (valueList.get(i) < valueList.get(i - 1)) {
-                    second = valueList.get(i);
-                    break;
-                }
+            if (valueList.size() > 1) {
+                second = valueList.get(1);
             }
 
             String answer = "";
