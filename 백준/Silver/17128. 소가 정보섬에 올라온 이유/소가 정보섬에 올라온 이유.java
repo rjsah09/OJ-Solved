@@ -27,13 +27,16 @@ public class Main {
         }
 
         st = new StringTokenizer(br.readLine());
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < Q; i++) {
             int joke = Integer.parseInt(st.nextToken()) - 1;
             for (int j = 0; j < 4; j++) {
                 sums[(N - j + joke) % N] *= -1;
                 total += 2 * sums[(N - j + joke) % N];
             }
-            System.out.println(total);
+            sb.append(total + "\n");
         }
+
+        System.out.println(sb);
     }
 }
