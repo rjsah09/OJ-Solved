@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Main {
 
+    static List<Integer> fullArgsList;
     static Set<Integer> set;
     static StringBuilder sb;
 
@@ -13,6 +14,7 @@ public class Main {
         int N = Integer.parseInt(br.readLine());
         set = new HashSet<>();
         sb = new StringBuilder();
+        fullArgsList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
 
         for (int i = 0; i < N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
@@ -73,7 +75,7 @@ public class Main {
     }
 
     static void all() {
-        set.addAll(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20));
+        set.addAll(fullArgsList);
     }
 
     static void empty() {
