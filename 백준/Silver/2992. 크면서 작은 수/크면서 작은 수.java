@@ -23,7 +23,9 @@ public class Main {
 
         for (int i = 0; i < XValue.length; i++) {
             if (XValue[i] - 0 >= XValue[0] - 0) {
+                visited[i] = true;
                 dfs("", i);
+                visited[i] = false;
             }
         }
 
@@ -32,13 +34,11 @@ public class Main {
     }
 
     public static void dfs(String prev, int index) {
-        visited[index] = true;
         String now = prev + XValue[index];
 
         if (now.length() == X.length()) {
             int totalNum = Integer.parseInt(now);
             if (totalNum <= Integer.parseInt(X)) {
-                visited[index] = false;
                 return;
             }
             result = result == 0 ? Integer.parseInt(now) : Math.min(result, Integer.parseInt(now));
@@ -46,10 +46,11 @@ public class Main {
 
         for (int i = 0; i < XValue.length; i++) {
             if (!visited[i] && Integer.parseInt(now + XValue[i]) >= Integer.parseInt(X.substring(0, prev.length() + 1))) {
+                visited[i] = true;
                 dfs (now, i);
+                visited[i] = false;
             }
         }
 
-        visited[index] = false;
     }
 }
