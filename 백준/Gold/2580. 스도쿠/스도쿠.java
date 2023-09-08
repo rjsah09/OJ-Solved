@@ -30,7 +30,9 @@ public class Main {
 
         sb = new StringBuilder();
         for (int i = 1; i <= 9; i++) {
-            dfs(0, i);
+            if (isNumberSafe(0, i)) {
+                dfs(0, i);
+            }
         }
 
         System.out.println(sb);
@@ -39,12 +41,6 @@ public class Main {
     static void dfs(int depth, int num) {
         int row = emptyAreaLists[0].get(depth);
         int col = emptyAreaLists[1].get(depth);
-
-        if (!isNumberSafe(row, col, num)) {
-            board[row][col] = 0;
-            return;
-        }
-
         board[row][col] = num;
 
         if (depth == emptyAreaLists[0].size() - 1) {
@@ -61,13 +57,18 @@ public class Main {
         }
 
         for (int i = 1; i <= 9; i++) {
-            dfs (depth + 1, i);
+            if (isNumberSafe(depth + 1, i)) {
+                dfs(depth + 1, i);
+            }
         }
 
         board[row][col] = 0;
     }
 
-    static boolean isNumberSafe(int row, int col, int num) {
+    static boolean isNumberSafe(int depth, int num) {
+        int row = emptyAreaLists[0].get(depth);
+        int col = emptyAreaLists[1].get(depth);
+        
         for (int i = 0; i < 9; i++) {
             if (board[row][i] == num || board[i][col] == num) {
                 return false;
