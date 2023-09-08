@@ -8,13 +8,13 @@ public class Main {
 
     static int[][] board;
     static ArrayList<Integer>[] emptyAreaLists; //빈공간 정보
-
-    static StringBuilder sb;
+    static boolean found;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         board = new int[9][9];
         emptyAreaLists = new ArrayList[] {new ArrayList<>(), new ArrayList<>()};
+        found = false;
 
         for (int i = 0; i < 9; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
@@ -28,11 +28,18 @@ public class Main {
             }
         }
 
-        sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         for (int i = 1; i <= 9; i++) {
-            if (isNumberSafe(0, i)) {
+            if (isNumberSafe(0, i) && !found) {
                 dfs(0, i);
             }
+        }
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                sb.append(board[i][j] + " ");
+            }
+            sb.append("\n");
         }
 
         System.out.println(sb);
@@ -44,31 +51,27 @@ public class Main {
         board[row][col] = num;
 
         if (depth == emptyAreaLists[0].size() - 1) {
-            if (sb.length() == 0) {
-                for (int i = 0; i < 9; i++) {
-                    for (int j = 0; j < 9; j++) {
-                        sb.append(board[i][j] + " ");
-                    }
-                    sb.append("\n");
-                }
-            }
-
+            found = true;
             return;
         }
 
-        for (int i = 1; i <= 9; i++) {
-            if (isNumberSafe(depth + 1, i)) {
-                dfs(depth + 1, i);
+        if (!found) {
+            for (int i = 1; i <= 9; i++) {
+                if (isNumberSafe(depth + 1, i)) {
+                    dfs(depth + 1, i);
+                }
             }
         }
 
-        board[row][col] = 0;
+        if (!found) {
+            board[row][col] = 0;
+        }
     }
 
     static boolean isNumberSafe(int depth, int num) {
         int row = emptyAreaLists[0].get(depth);
         int col = emptyAreaLists[1].get(depth);
-        
+
         for (int i = 0; i < 9; i++) {
             if (board[row][i] == num || board[i][col] == num) {
                 return false;
