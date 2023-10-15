@@ -36,8 +36,6 @@ public class Main {
             visited[i] = false;
         }
 
-        Collections.sort(passwordList);
-
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < passwordList.size(); i++) {
             sb.append(passwordList.get(i)).append("\n");
