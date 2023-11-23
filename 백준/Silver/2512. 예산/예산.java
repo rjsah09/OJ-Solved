@@ -20,7 +20,7 @@ public class Main {
         long M = Integer.parseInt(br.readLine());
 
         long start = 0L;
-        long end = M;
+        long end = budgets[N - 1];
         while (start <= end) {
             long center = (start + end) / 2L;
 
@@ -41,10 +41,6 @@ public class Main {
             }
         }
 
-        if (answer > budgets[N - 1]) {
-            System.out.println(budgets[N - 1]);
-        } else {
-            System.out.println(answer);
-        }
+        System.out.println(answer);
     }
 }
