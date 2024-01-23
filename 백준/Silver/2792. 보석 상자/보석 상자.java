@@ -38,7 +38,7 @@ public class Main {
             }
 
             if (count <= N) {
-                result = Math.min(result, max);
+                result = max;
                 end = mid -1;
             } else {
                 start = mid + 1;
