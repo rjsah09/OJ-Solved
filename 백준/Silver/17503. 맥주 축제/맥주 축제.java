@@ -1,9 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -23,17 +21,22 @@ public class Main {
             start = Math.min(start, beers[i][1]);
             end = Math.max(end, beers[i][1]);
         }
+        Arrays.sort(beers, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                if (o1[0] == o2[0]) {
+                    return o1[1] - o2[1];
+                } else {
+                    return o2[0] - o1[0];
+                }
+            }
+        });
 
         long result = -1;
         while (start <= end) {
             long mid = (start + end) / 2;   //최고 간 레벨
 
-            PriorityQueue<Integer> pq = new PriorityQueue<>(new Comparator<Integer>() {
-                @Override
-                public int compare(Integer o1, Integer o2) {
-                    return o2 - o1;
-                }
-            });
+            /*PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
 
             for (int i = 0; i < beers.length; i++) {
                 if (beers[i][1] <= mid) {
@@ -49,8 +52,23 @@ public class Main {
             long sum = 0;
             for (int i = 0; i < N; i++) {
                 sum += pq.poll();
+            }*/
+            int count = 0;
+            int sum = 0;
+            for (int i = 0; i < beers.length; i++) {
+                if (beers[i][1] <= mid && count < N) {
+                    count++;
+                    sum += beers[i][0];
+                    if (count >= N) {
+                        break;
+                    }
+                }
             }
 
+            if (count < N) {
+                start = mid + 1;
+                continue;
+            }
 
             if (sum >= M) {
                 result = mid;
