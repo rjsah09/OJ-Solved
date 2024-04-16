@@ -1,8 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -31,16 +30,17 @@ public class Main {
             return board[rowStart][colStart];
         }
 
-        ArrayList<Integer> sortList = new ArrayList<>();
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         for (int i = 0; i < 2; i++) {
             int nextRowStart = rowStart + i * size / 2;
             for (int j = 0; j < 2; j++) {
                 int nextColStart = colStart + j * size / 2;
-                sortList.add(pool(nextRowStart, nextColStart, size / 2));
+                pq.add(pool(nextRowStart, nextColStart, size / 2));
             }
         }
 
-        Collections.sort(sortList, Collections.reverseOrder());
-        return sortList.get(1);
+        pq.poll();
+        pq.poll();
+        return pq.poll();
     }
 }
