@@ -1,58 +1,50 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
-    static long[][] board;
+    static int N,M; //상수
+    static long[][] glass; //입력 데이터
+    static int answer=0;  //결과 값
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());   //row
-        int M = Integer.parseInt(st.nextToken());   //col
-        board = new long[N][M];
-        long[][] dp = new long[N][M];
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st=new StringTokenizer(br.readLine());
 
-        for (int i = 0; i < N; i++) {
+        N=Integer.parseInt(st.nextToken());
+        M=Integer.parseInt(st.nextToken());
+
+        glass=new long[N+2][M+2]; //0과 N?
+
+        st=new StringTokenizer(br.readLine());//출발할 수 있는 노드에 값1을 넣음
+
+        for(int j=1;j<=M;j++){
+            if(st.nextToken().equals("1"))
+                glass[1][j]=1;
+        }
+
+        for(int i = 2; i <= N; i++) {//도착한 노드의 시점에서 출발 가능한 노드의 합을 도착한 노드에 넣음
             st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < M; j++) {
-                board[i][j] = Integer.parseInt(st.nextToken());
-            }
-        }
 
-        dp[0] = Arrays.copyOf(board[0], M);
-
-        int[] dy = {-1, 0, 1};
-        for (int i = 1; i < N; i++) {   //도착하려는 단계
-            for (int j = 0; j < M; j++) {   //단계의 계단 위치
-                if (board[i][j] == 0) {
-                    continue;
+            for(int j = 1;j <= M; j++) {
+                //값이 1인 노드가 도착 가능한 노드이기 때문에 0인 노드는 취급하지 않음
+                if(st.nextToken().equals("1")){
+                    //glass[i][j]=glass[i-1][j]+glass[i-1][j-1]+glass[i-1][j+1];
+                    //프로덕트 규칙 적용
+                    glass[i][j] += (glass[i - 1][j] % 1_000_000_007 + glass[i - 1][j - 1] % 1_000_000_007 + glass[i - 1][j + 1] % 1_000_000_007) % 1_000_000_007;
                 }
-
-                for (int k = 0; k < dy.length; k++) {
-                    int beforeRow = i - 1;
-                    int beforeCol = j + dy[k];
-                    if (isIndexSafe(beforeRow, beforeCol)) {
-                        dp[i][j] += dp[beforeRow][beforeCol] % 1_000_000_007;
-                    }
-                }
-                dp[i][j] %= 1_000_000_007;
             }
         }
 
-        long result = 0;
-        for (int i = 0; i < M; i++) {
-            if (dp[N - 1][i] != 0) {
-                result += dp[N - 1][i] % 1_000_000_007;
-            }
+        for(int j=1;j<=M;j++){//
+            answer+=glass[N][j] % 1_000_000_007;
+            answer%=1000000007;
         }
 
-        System.out.println(result % 1_000_000_007);
-    }
+        bw.write(String.valueOf(answer));
+        bw.flush();
+        bw.close();
+        br.close();
 
-    static boolean isIndexSafe(int row, int col) {
-        return row >= 0 && row < board.length && col >= 0 && col < board[0].length;
     }
 }
