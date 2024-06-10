@@ -8,7 +8,6 @@ public class Main {
     static int N;   //남은 기간
     static int M;   //챕터의 수
     static int[][] board;
-    static boolean[] visited;
     static int max;
 
     public static void main(String[] args) throws IOException {
@@ -17,7 +16,6 @@ public class Main {
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         board = new int[M][2];
-        visited = new boolean[M];
         max = 0;
         
         for (int i = 0; i < M; i++) {
@@ -29,9 +27,7 @@ public class Main {
         for (int i = 0; i < M; i++) {
             int leftDays = N - board[i][0];
             if (leftDays >= 0) {
-                visited[i] = true;
                 dfs(i, board[i][1], leftDays);
-                visited[i] = false;
             }
         }
 
@@ -41,12 +37,10 @@ public class Main {
     static void dfs(int chapter, int readPages, int leftDays) {
         max = Math.max(readPages, max);
 
-        for (int i = chapter; i < M; i++) {
+        for (int i = chapter + 1; i < M; i++) {
             int newLeftDays = leftDays - board[i][0];
-            if (!visited[i] && newLeftDays >= 0) {
-                visited[i] = true;
+            if (newLeftDays >= 0) {
                 dfs(i, readPages + board[i][1], newLeftDays);
-                visited[i] = false;
             }
         }
     }
