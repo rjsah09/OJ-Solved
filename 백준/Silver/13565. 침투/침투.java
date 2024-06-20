@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -31,27 +33,35 @@ public class Main {
 
         for (int i = 0; i < M; i++) {
             if (board[0][i] == 0 && result.equals("NO")) {
-                dfs(0, i);
+                board[0][i] = 1;
+                bfs(0, i);
             }
         }
 
         System.out.println(result);
     }
 
-    static void dfs(int row, int col) {
-        board[row][col] = 1;
+    static void bfs(int row, int col) {
+        Queue<int[]> q = new LinkedList<>();
+        int[] startNode = new int[] {row, col};
+        q.add(startNode);
 
-        if (row == N - 1) {
-            result = "YES";
-            return;
-        }
+        while (!q.isEmpty()) {
+            int[] node = q.poll();
 
-        for (int i = 0; i < 4; i++) {
-            int nextRow = row + dx[i];
-            int nextCol = col + dy[i];
+            if (node[0] == N - 1) {
+                result = "YES";
+                return;
+            }
 
-            if (isIndexSafe(nextRow, nextCol) && board[nextRow][nextCol] == 0) {
-                dfs(nextRow, nextCol);
+            for (int i = 0; i < 4; i++) {
+                int nextRow = node[0] + dx[i];
+                int nextCol = node[1] + dy[i];
+
+                if (isIndexSafe(nextRow, nextCol) && board[nextRow][nextCol] == 0) {
+                    board[nextRow][nextCol] = 1;
+                    q.add(new int[] {nextRow, nextCol});
+                }
             }
         }
     }
