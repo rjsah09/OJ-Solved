@@ -27,9 +27,16 @@ public class Main {
 
         for (int i = 1; i < N; i++) {
             for (int j = 1; j < M; j++) {
-                if (board[i][j] > 0 && board[i - 1][j - 1] > 0) {
-                    int maxLength = board[i - 1][j - 1] + 1;
-                    board[i][j] = Math.max(board[i][j], getMaxSquare(i, j, maxLength));
+                if (board[i][j] > 0) {
+                    int maxLength;
+
+                    if (board[i -1][j] == board[i][j - 1] && board[i - 1][j - 1] < board[i - 1][j]) {
+                        maxLength = board[i - 1][j - 1] + 1;
+                    } else {
+                        maxLength = Math.min(board[i -1][j], board[i][j - 1]) + 1;
+                    }
+
+                    board[i][j] = maxLength;
                 }
 
                 answer = Math.max(answer, board[i][j]);
@@ -37,19 +44,5 @@ public class Main {
         }
 
         System.out.println(answer * answer);
-    }
-
-    static int getMaxSquare(int endRow, int endCol, int length) {
-        int maxLength  = 0;
-
-        for (int i = 0; i < length; i++) {
-            if (board[endRow][endCol - i] > 0 && board[endRow - i][endCol] > 0) {
-                maxLength++;
-            } else {
-                break;
-            }
-        }
-
-        return maxLength;
     }
 }
